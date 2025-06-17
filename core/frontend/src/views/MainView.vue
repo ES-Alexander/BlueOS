@@ -189,8 +189,10 @@ export default Vue.extend({
     orientation(): string {
       const msg = mavlink_store_get(mavlink, 'ATTITUDE.messageData.message') as
         { roll: number; pitch: number; yaw: number } | undefined
+      // documented default value
       if (!msg) return '0deg 0deg 0deg'
-      return `${msg.roll}rad ${msg.pitch}rad ${msg.yaw}rad`
+      // convert from MAVLink ATTITUDE's aeronatical frame
+      return `${msg.roll}rad ${-msg.pitch}rad ${-msg.yaw}rad`
     },
   },
   mounted() {
